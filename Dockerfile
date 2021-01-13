@@ -1,4 +1,6 @@
-FROM pstauffer/curl:v1.0.3
+FROM --platform=$TARGETPLATFORM alpine AS runtime
+ARG TARGETPLATFORM
+ARG BUILDPLATFORM
 
 MAINTAINER pstauffer@confirm.ch
 
@@ -6,10 +8,9 @@ MAINTAINER pstauffer@confirm.ch
 # Install all required dependencies.
 #
 
-RUN apk --update upgrade && \
-    apk add --update inotify-tools && \
-    rm -rf /var/cache/apk/*
-
+RUN set -eux; \
+    \
+    apk add --update --no-cache curl inotify-tools
 
 #
 # Add named init script.
