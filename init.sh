@@ -39,9 +39,9 @@ inotifywait -e ${INOTIFY_EVENTS} ${INOTIFY_OPTONS} "${VOLUMES}" | \
     	echo "$notifies"
         if [ "$ACTION" = "kill" ]; then
             echo "notify received, sent signal ${SIGNAL} to container ${CONTAINER}"
-            curl ${CURL_OPTIONS} -X POST --unix-socket /var/run/docker.sock http:/${DOCKER_ENGINE_API_VERSION}/containers/${CONTAINER}/kill?signal=${SIGNAL} > /dev/stdout 2> /dev/stderr
+            curl ${CURL_OPTIONS} -X POST --unix-socket /var/run/docker.sock http:/${DOCKER_ENGINE_API_VERSION}/containers/${CONTAINER}/kill?signal=${SIGNAL} > /proc/1/fd/1 2>/proc/1/fd/2
         else
             echo "notify received, execute the ${ACTION} for container ${CONTAINER}"
-            curl ${CURL_OPTIONS} -X POST --unix-socket /var/run/docker.sock http:/${DOCKER_ENGINE_API_VERSION}/containers/${CONTAINER}/${ACTION}?${ACTION_PARAMS} > /dev/stdout 2> /dev/stderr
+            curl ${CURL_OPTIONS} -X POST --unix-socket /var/run/docker.sock http:/${DOCKER_ENGINE_API_VERSION}/containers/${CONTAINER}/${ACTION}?${ACTION_PARAMS} > /proc/1/fd/1 2>/proc/1/fd/2
         fi
     done
