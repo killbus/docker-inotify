@@ -1,14 +1,19 @@
-inotify:
-  image: 'pstauffer/inotify:latest'
-  container_name: 'inotify'
+version: '3.5'
 
-  volumes:
-  - '/var/run/docker.sock:/tmp/docker.sock:ro'
-  - '/var/lib/docker/data/bind/config:/config'
-  - '/var/lib/docker/data/bind/data:/data'
+services:
+  
+  inotify:
+    image: ghcr.io/killbus/docker-inotify:latest
 
-  environment:
-  - 'CONTAINER=bind'
-  - 'VOLUMES=/config /data'
+    volumes:
+    - /var/run/docker.sock:/var/run/docker.sock:ro
+    - /var/lib/docker/data/bind/config:/config
+    - /var/lib/docker/data/bind/data:/data
 
-  restart: always
+    environment:
+    - 'CONTAINER=bind'
+    - 'VOLUMES=/config /data'
+    - 'ACTION=restart'
+    #- 'ACTION=kill'
+
+    restart: always
